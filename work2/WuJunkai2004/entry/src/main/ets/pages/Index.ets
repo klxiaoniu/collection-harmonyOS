@@ -2,8 +2,6 @@ import { common, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 
-let message = 'up2'
-
 const TAG: string = '[Page_UIAbilityComponentsInteractive]';
 const DOMAIN_NUMBER: number = 0xFF00;
 
@@ -11,10 +9,104 @@ function log(str: string){
   hilog.info(DOMAIN_NUMBER, TAG, str)
 }
 
+// 定义接口
+interface Post {
+  txt: string;
+  pic: string;
+}
+
+interface UPPost{
+  name: string;
+  msgs: Post[];
+}
+
+interface UPMsg{
+  name: string,
+  avatar: string,
+}
+
+// 定义对象类型
+const post_info: UPPost[] = [
+  {
+    name: 'up1',
+    msgs: [
+      {
+        txt: '这是一个视频动态的文本，来自up1',
+        pic: 'avatar_1.png'
+      },
+    ]
+  },
+  {
+    name: 'up2',
+    msgs: [
+      {
+        txt: '这是一个视频动态的文本，我不知道写什么就乱写了',
+        pic: 'avatar_1.png'
+      },
+      {
+        txt: '这是拎一个到奥德赛默默地发欧美撒旦欧码但是莫马上发没发哦默哀是',
+        pic: 'avatar_1.png'
+      }
+    ]
+  },
+  {
+    name: 'up3',
+    msgs: [
+      {
+        txt: '这是一个视频动态的文本，来自up3',
+        pic: 'avatar_1.png'
+      },
+    ]
+  },
+  {
+    name: 'up4',
+    msgs: [
+      {
+        txt: '这是一个视频动态的文本，来自up4',
+        pic: 'avatar_1.png'
+      },
+    ]
+  },
+  {
+    name: 'up5',
+    msgs: [
+      {
+        txt: '这是一个视频动态的文本，来自up5',
+        pic: 'avatar_1.png'
+      },
+    ]
+  }
+]
+
+const UPs: UPMsg[] = [
+  {
+    name: 'up1',
+    avatar: 'avatar_1.png'
+  },
+  {
+    name: 'up2',
+    avatar: 'avatar_1.png'
+  },
+  {
+    name: 'up3',
+    avatar: 'avatar_1.png'
+  },
+  {
+    name: 'up4',
+    avatar: 'avatar_1.png'
+  },
+  {
+    name: 'up5',
+    avatar: 'avatar_1.png'
+  }
+]
+
 @Entry
 @Component
 struct Index {
   private context = getContext(this) as common.UIAbilityContext;
+
+  @State UP_name: String = 'up1'
 
   @Builder
   avatar(src: Resource, name: string){
@@ -65,11 +157,9 @@ struct Index {
     Column() {
       Navigation(){
         Grid() {
-          this.avatar($rawfile('avatar_1.png'), 'up1')
-          this.avatar($rawfile('avatar_1.png'), 'up2')
-          this.avatar($rawfile('avatar_1.png'), 'up3')
-          this.avatar($rawfile('avatar_1.png'), 'up4')
-          this.avatar($rawfile('avatar_1.png'), 'up5')
+          ForEach(UPs, (item: UPMsg, idx?: number) => {
+            this.avatar($rawfile(item.avatar), item.name)
+          })
         }
         .height('10%')
         .borderRadius(5)
@@ -81,7 +171,7 @@ struct Index {
 
         Swiper(new SwiperController()){
           Column(){
-            Text(message + '的视频动态')
+            Text(this.UP_name+ '的视频动态')
               .fontSize(22)
 
             this.card('这是一个视频动态的文本，我不知道写什么就乱写了', $rawfile('avatar_1.png'))
